@@ -45,16 +45,18 @@ public class MouseController : MonoBehaviour
     public AudioSource jetpackAudio;
     public AudioSource footstepsAudio;
     public ParallaxScroll parallax;
+    public Text coinsLabel;
+    public GameObject restartDialog;
 
     private Animator animator;
     private bool grounded;
     private bool dead = false;
     private uint coins = 0;
-    public Text coinsLabel;
 
     void Start ()
     {
         animator = GetComponent<Animator>();
+        restartDialog.SetActive(false);
     }
 
     void FixedUpdate ()
@@ -110,6 +112,7 @@ public class MouseController : MonoBehaviour
 	    }
 	    dead = true;
 	    animator.SetBool("dead", true);
+      restartDialog.SetActive(true);
     }
 
     void CollectCoin(Collider2D coinCollider)
@@ -125,5 +128,15 @@ public class MouseController : MonoBehaviour
       footstepsAudio.enabled = !dead && grounded;
       jetpackAudio.enabled =  !dead && !grounded;
 	  jetpackAudio.volume = jetpackActive ? 1.0f : 0.5f;
+  }
+
+  public void RestartGame()
+  {
+    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+  }
+
+public void ExitToMenu()
+  {
+    SceneManager.LoadScene("MenuScene");
   }
 }
